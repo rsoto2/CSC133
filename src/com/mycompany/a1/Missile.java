@@ -1,15 +1,16 @@
 package com.mycompany.a1;
 
 import com.codename1.charts.util.ColorUtil;
+import com.codename1.ui.geom.Point2D;
 
 public class Missile extends MovableGameObject implements Movable{
 	
 private int fuelLevel = 15;
 private Ship owner;
 
-public Missile(int color, int speed, int direction, Ship owner) {
+public Missile(int color, double x, double y, int speed, int direction, Ship owner) {
 	
-	super(ColorUtil.BLACK, 0, 0);
+	super(ColorUtil.BLACK, speed, direction);
 	this.owner = owner;
 	//this.setLocationX(x);
 	//this.setLocationY(y);
@@ -17,9 +18,15 @@ public Missile(int color, int speed, int direction, Ship owner) {
   	//this.setSpeed(30);
     //  this.setLocation(x, y);
   	//this.setDirection(0);
+	//this.getDirection();
+	//this.getSpeed();
+	this.getLocation();
+	//this.setLocation(x, y);
+	this.setColor(255, 0, 0);
+	this.setSpeed(15);
+	//this.setDirection(direction);
 	this.getDirection();
-	this.getSpeed();
-	
+	decrementFuelLevel();
 	
 	
 }
@@ -30,16 +37,20 @@ public Ship getOwner() {
 
 
 public void setFuel(int f) {
-	this.fuelLevel = f;
+	fuelLevel = f;
 }
 
 public int getFuel() {
-	return fuelLevel;
+	return this.fuelLevel;
 }
 
 public int decrementFuelLevel() {
+	super.move();
 	return fuelLevel--;
+	//return this.getFuel() - 1;
 }
+
+
 
 
 

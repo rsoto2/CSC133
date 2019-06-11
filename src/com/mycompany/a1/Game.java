@@ -31,6 +31,7 @@ public class Game extends Form {
 			public void actionPerformed(ActionEvent evt) {
 				String sCommand = myTextField.getText().toString();
 				myTextField.clear();
+				if(!sCommand.isEmpty()) {
 				switch(sCommand.charAt(0)) {
 				case 'a': 
 					gw.addNewAsteroid();
@@ -47,22 +48,56 @@ public class Game extends Form {
 				case 'f': 
 					gw.fireMissile();
 					break;
-				
 				case 'L': 
 					gw.launchMissile();
 					break;
-				
 				case 'm':
 					gw.printMap();
 					break;
 				case 'p':
 					gw.printDisplay();
 					break;
-					
+				case '>': 
+					//gw.turnMissileLauncher();
+					//gw.ML();
+					gw.turnPSML();
+					break;
+				case 'n':
+					gw.reSupply();
+					break;
+				case 'k':
+					//gw.killAsteroid();
+					gw.playerShipMissileKillAsteroid(); //works
+					break;
+				case 'e':
+					//gw.killNonPlayerShip();
+					//gw.playerShipMissileKillAsteroid(); 
+					gw.removeMissileAndNPS(); //works
+					break;
+				case 'E':
+					//gw.killPlayerShip();
+					gw.removeMissileAndPS(); //works
+					break;
+				case 'c':
+					//gw.asteroidCollide();
+					gw.removeAstAndPS(); //works
+					break;
+				case 'h':
+					//gw.shipcollide();
+					gw.removeNPSAndPS(); //works
+					break;
+				case 'x':
+					gw.removeAsteroids();//works
+					//gw.removeAstAndAst();
+					break;
+				case 'I':
+					//gw.turnLeft();
+					gw.removeAstAndNPS(); //works
+					break;
 			
 					
 				
-				
+				}
 				}//switch
 			}
 		});

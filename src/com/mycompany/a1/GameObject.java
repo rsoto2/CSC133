@@ -7,11 +7,11 @@ import com.codename1.ui.geom.Point2D;
 public abstract class GameObject {
 
 	static Random rand = new Random();
-	private double xLocation;
-	private double yLocation;
+	//private double xLocation;
+	//private double yLocation;
 	private Point2D location;
 	private int color;
-	private final double MAX_X_Y = 0;
+	//private final double MAX_X_Y = 0;
 	private final double MAX_X = 1024;
 	private final double MAX_Y = 768;
 	
@@ -35,7 +35,7 @@ public abstract class GameObject {
 		location = new Point2D(x,y);
 	}
 	public int getColor() {
-		return color;
+		return this.color;
 	}
 	public void setColor(int r, int g, int b) {
 		color = ColorUtil.rgb(r, g, b);
@@ -43,15 +43,15 @@ public abstract class GameObject {
 
 	
 	public double getLocationY() {
-		return location.getY();
+		return this.location.getY();
 	}
 	
 	public double getLocationX() {
-		return location.getX();
+		return this.location.getX();
 	}
 	
 	public Point2D getLocation() {
-		return location;
+		return this.location;
 	}
 	
 	

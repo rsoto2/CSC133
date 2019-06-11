@@ -2,12 +2,14 @@ package com.mycompany.a1;
 
 import com.codename1.charts.util.ColorUtil;
 
-public class PlayerShip extends Ship{
+public class PlayerShip extends Ship implements ISteerable {
 	
-	private int missileCount;
-	private int max;
+	
 	private MissileLauncher launcher;
+
 	private int lives;
+	private int playerScore;
+	
 	
 	
 	public PlayerShip() 
@@ -20,21 +22,28 @@ public class PlayerShip extends Ship{
 		//this.setSpeed(0);
 		setColor(255,0,0);
 		setLocation(512, 384);;
-		 lives = 3;
+		lives = 3;
+		playerScore = 0;
+		launcher = new MissileLauncher(this.getLocationX(), this.getLocationY(), this.getSpeed(), this.getDirection());
 		 //System.out.println(this.toString());
 		
+	}
+	
+	MissileLauncher getMissileLauncher() 
+	{
+		return launcher;
 		
 	}
 
 	
-	public void incrementSpeed() {
-		
+	public int incrementSpeed(int speed) {
+		return this.getSpeed() - 1;
 	}
 	
 	
 	
-	public void decreaseSpeed() {
-		
+	public int decreaseSpeed(int speed) {
+		return this.getSpeed() - 1;
 	}
 	
 	
@@ -47,12 +56,40 @@ public class PlayerShip extends Ship{
 	}
 	
 	
+//	public int getLauncherDirection()
+//	{
+//		return launcher.getDirection();
+//	}
+	
+	public void setPlayerScore(int s) {
+		playerScore = s;
+	}
+	
+	public int getPlayerScore() {
+		return playerScore;
+	}
+	
 	public String toString() {
 		return ("PlayerShip: loc= " + Math.round(this.getLocationX()) + "," + Math.round(this.getLocationY()) +
 		" color= " + GameObject.getColorString(getColor()) + 
 		" speed= " + Math.round(getSpeed()) + 
-		" dir= " + getDirection() 
+		" dir= " + getDirection() +
+		" direction of ml = " + launcher.getDirection()
 		);
+	}
+
+
+	@Override
+	public void turnLeft() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void turnRight() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

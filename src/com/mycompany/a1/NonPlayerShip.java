@@ -15,12 +15,14 @@ public class NonPlayerShip extends Ship{
 		this.setDirection(rand.nextInt(360));
 		final int MIN_SIZE = 15;
 		final int MAX_SIZE = 25;
+		this.setColor(300, 0, 0);
 		this.size = GameObject.rand.nextInt(MAX_SIZE - MIN_SIZE + 1) + MIN_SIZE;
-		SetMissileCount(4);
+		setMissileCount(4);
 		
 		
 		
 	}
+	
 	
 
 	

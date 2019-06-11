@@ -14,8 +14,12 @@ public class GameWorld  {
 	private int elapsedGameTime = 0;
 	private int playerScore = 0;
 	private int numPSMissiles = 0;
-	private int playerLives = 0;
+	private int playerLives = 3;
 	private int clock;
+	private int fuel;
+	private PlayerShip ship;
+	private PlayerShip s = null;
+	private MissileLauncher m = null;
 	
 	
 	
@@ -34,7 +38,7 @@ public class GameWorld  {
 	}
 	
 	public void newPS() {
-		PlayerShip s = new PlayerShip();
+		s = new PlayerShip();
 		store.add(s);
 		System.out.println("A new PS will be created");
 		
@@ -60,8 +64,8 @@ public class GameWorld  {
 			if(store.elementAt(i) instanceof PlayerShip) {
 				PlayerShip ps = (PlayerShip) store.elementAt(i);
 				if(ps.getMissileCount() > 0) { 
-					ps.SetMissileCount(ps.getMissileCount() -1);//Dec missile count by 1
-				Missile ms1 = new Missile(ps.getColor(), ps.getSpeed(), ps.getDirection(), ps);
+					ps.setMissileCount(ps.getMissileCount() -1);//Dec missile count by 1
+				Missile ms1 = new Missile(ps.getColor(), ps.getLocationX(), ps.getLocationY(), ps.getSpeed(), ps.getDirection(), ps);
 				store.add(ms1);
 				System.out.println("PlayerShip has fired a Missile!");
 				return;
@@ -79,8 +83,8 @@ public class GameWorld  {
 			if(store.elementAt(i) instanceof NonPlayerShip) {
 				NonPlayerShip nps = (NonPlayerShip) store.elementAt(i);
 				if(nps.getMissileCount() > 0)  {
-					nps.SetMissileCount(nps.getMissileCount() -1);
-				Missile ms1 = new Missile(nps.getColor(), nps.getSpeed(), nps.getDirection(), nps);
+					nps.setMissileCount(nps.getMissileCount() -1);
+				Missile ms1 = new Missile(nps.getColor(), nps.getLocationX(), nps.getLocationY(),  nps.getSpeed(), nps.getDirection(), nps);
 				store.add(ms1);
 				System.out.println("NonPlayerShip has fired a Missile!");
 				return;
@@ -90,6 +94,328 @@ public class GameWorld  {
 			}
 			}
 		}
+	}
+	
+	
+	
+	public void tick() {
+		clock++;
+		if(store.size() > 0) {
+			for(int i = 0; i < (store.size() - 1); i++) {
+				if(store.get(i) instanceof Movable) {
+					Movable curMovableObj = (Movable) store.get(i);
+					curMovableObj.move(); 
+				}
+				if(store.get(i) instanceof Missile) {
+					Missile curMissile = (Missile) store.get(i);
+					int fuel = curMissile.getFuel();
+					if(fuel > 1) {
+						curMissile.setFuel(fuel - 1);
+					}
+				}
+			}
+		}
+	}
+	
+	
+	public void turnPSML() throws IllegalArgumentException {
+		for(int i = 0; i < store.size(); i++) 
+		{
+		
+			PlayerShip ps = (PlayerShip) store.elementAt(i);
+			if(ps.getMissileLauncher().getDirection() == 0) {
+				ps.getMissileLauncher().setDirection(-90);
+				System.out.println("Turning direction of missile launcher");
+				}
+				else 
+					System.out.println("Can't turn missile");
+		}
+	}
+	
+	
+	
+	public void turnShipLeft() {
+		if(s instanceof PlayerShip) {
+			s.setDirection(-90);
+			System.out.println("Turning left");
+		}
+		else {
+			System.out.println("Can't go left.");
+		}
+	}
+	
+	public void turnShipRight() {
+		if(s instanceof PlayerShip) {
+			s.setDirection(1);
+			System.out.println("Turning Right");
+		}
+		else {
+			System.out.println("Can't go right");
+		}
+	}
+	
+	public void reSupply() {
+		if(s instanceof PlayerShip) {
+ 			s.setMissileCount(10);
+			System.out.println("Missiles Reloaded");
+			
+		}
+		else {
+			System.out.println("Can't resupply");
+		}
+	}
+	
+	
+	
+	public void playerShipMissileKillAsteroid() //player ship destroys asteroid 
+    {
+        boolean asteroidExists = false;
+        boolean missileExists = false;
+        Missile ms = null;
+        Asteroid ast = null;
+        
+        for (int i = 0; i <store.size() && (!asteroidExists || !missileExists); i++)
+        {
+            if ((store.elementAt(i) instanceof Asteroid) && !asteroidExists)
+            {
+                ast = (Asteroid) store.elementAt(i);
+                asteroidExists = true;
+            }        
+            
+            if ((store.elementAt(i) instanceof Missile) && !missileExists)
+            {
+                ms = (Missile) store.elementAt(i);
+                missileExists = true;
+            }        
+        }
+        
+        if(missileExists && asteroidExists)
+        {
+            store.remove(ast);
+            store.remove(ms);
+            //ps.setPlayerScore(ps.PlayerScore() + 1);
+            playerScore += 1;
+            
+            System.out.println("Player has destroyed an Asteroid with a missile! Score increased by 1!");
+        }
+        else
+            System.out.println("Error: A missile or Asteroid doesn't exist.");        
+    }
+	
+	
+	
+	
+	public void removeMissileAndPS() //NPS missile destroys player ship
+    {
+        boolean psExists = false;
+        boolean missileExists = false;
+        Missile ms = null;
+        PlayerShip ps = null;
+        
+        for (int i = 0; i < store.size() && (!psExists || !missileExists); i++)
+        {
+            if ((store.elementAt(i) instanceof PlayerShip) && !psExists)
+            {
+                ps = (PlayerShip) store.elementAt(i);
+                psExists = true;
+            }        
+            
+            if ((store.elementAt(i) instanceof Missile) && !missileExists)
+            {
+                ms = (Missile) store.elementAt(i);
+                missileExists = true;
+            }        
+        }
+        
+        if(missileExists && psExists)
+        {
+            store.remove(ps);
+            store.remove(ms);
+            //this.setPlayerLives(this.getPlayerLives() - 1);
+          // ps.setLives(ps.getLives() - 1);
+            playerLives -= 1;
+            System.out.println("Player has lost a life! Player Lives Remaining: " +  playerLives);
+        }
+        else
+            System.out.println("Error: A missile or Player Ship doesn't exist.");    
+    }
+	
+	public void removeMissileAndNPS() throws IllegalArgumentException //PS missile destorys NPS
+    {
+        boolean npsExists = false;
+        boolean missileExists = false;
+        Missile ms = null;
+        NonPlayerShip nps = null;
+        
+        for (int i = 0; i < store.size() && (!npsExists || !missileExists); i++)
+        {
+            if ((store.elementAt(i) instanceof NonPlayerShip) && !npsExists)
+            {
+                nps = (NonPlayerShip) store.elementAt(i);
+                npsExists = true;
+            }        
+            
+            if ((store.elementAt(i) instanceof Missile) && !missileExists)
+            {
+                ms = (Missile) store.elementAt(i);
+                missileExists = true;
+            }        
+        }
+        
+        if(missileExists && npsExists)
+        {
+            store.remove(nps);
+            store.remove(ms);
+            //this.setPlayerLives(this.getPlayerLives() + 1);
+            playerLives += 1;
+            playerScore += 1;
+            System.out.println("Player destroyed Non Player Ship. Update Score: " + playerLives);
+        }
+        else
+            System.out.println("Error: A missile or NonPlayer Ship doesn't exist.");    
+    }
+	
+	
+	public void removeAstAndPS() // asteroid crashes into player ship
+    {
+        boolean psExists = false;
+        boolean astExists = false;
+        Asteroid ast = null;
+        PlayerShip ps = null;
+        
+        for (int i = 0; i < store.size() && (!psExists || !astExists); i++)
+        {
+            if ((store.elementAt(i) instanceof PlayerShip) && !psExists)
+            {
+                ps = (PlayerShip) store.elementAt(i);
+                psExists = true;
+            }        
+            
+            if ((store.elementAt(i) instanceof Asteroid) && !astExists)
+            {
+                ast = (Asteroid) store.elementAt(i);
+                astExists = true;
+            }        
+        }
+        
+        if(astExists && psExists)
+        {
+            store.remove(ps);
+            store.remove(ast);
+            //this.setPlayerLives(this.getPlayerLives() - 1);
+            playerLives -= 1;
+            System.out.println("Player has lost a life! Player Lives Remaining: " + playerLives);
+        }
+        else
+            System.out.println("Error: An asteroid or Player Ship doesn't exist.");    
+    }
+	
+
+	
+	public void removeNPSAndPS() //player ship and non player ship crash
+    {
+        boolean psExists = false;
+        boolean npsExists = false;
+        NonPlayerShip nps = null;
+        PlayerShip ps = null;
+        
+        for (int i = 0; i < store.size() && (!psExists || !npsExists); i++)
+        {
+            if ((store.elementAt(i) instanceof PlayerShip) && !psExists)
+            {
+                ps = (PlayerShip) store.elementAt(i);
+                psExists = true;
+            }        
+            
+            if ((store.elementAt(i) instanceof NonPlayerShip) && !npsExists)
+            {
+                nps = (NonPlayerShip) store.elementAt(i);
+                npsExists = true;
+            }        
+        }
+        
+        if(npsExists && psExists)
+        {
+            store.remove(ps);
+            store.remove(nps);
+            //this.setPlayerLives(this.getPlayerLives() - 1);
+            playerLives -= 1;
+            System.out.println("PS collided with a NPS! Player has lost a life! Player Lives Remaining: " + playerLives);
+        }
+        else
+            System.out.println("Error: A Non Player Ship or Player Ship doesn't exist.");    
+    }
+	
+	
+	
+	public void removeAstAndNPS() //asteroid hits non player ship
+    {
+        boolean npsExists = false;
+        boolean astExists = false;
+        Asteroid ast = null;
+        NonPlayerShip nps = null;
+        
+        for (int i = 0; i < store.size() && (!npsExists || !astExists); i++)
+        {
+            if ((store.elementAt(i) instanceof NonPlayerShip) && !npsExists)
+            {
+                nps = (NonPlayerShip) store.elementAt(i);
+                npsExists = true;
+            }        
+            
+            if ((store.elementAt(i) instanceof Asteroid) && !astExists)
+            {
+                ast = (Asteroid) store.elementAt(i);
+                astExists = true;
+            }        
+        }
+        
+        if(astExists && npsExists)
+        {
+            store.remove(nps);
+            store.remove(ast);
+            System.out.println("An asteroid and a Non Player Ship Collided! Both are Destroyed!");    
+        }
+        else
+            System.out.println("Error: An asteroid or Non Player Ship doesn't exist.");    
+    }
+	
+	
+	
+
+	//asteroids crash into each other
+	public void removeAsteroids() 
+	{
+	 boolean astro1 = false;
+	 boolean astro2 = false;
+	 int ast1 = 0;
+	 int ast2 = 0;
+		
+		for(int i = 0; i < store.size(); i++ ) {
+			if(store.get(i) instanceof Asteroid && astro1 != false) 
+			{
+				ast1 = i;
+				astro1 = true;
+			}
+			if (store.get(i) instanceof Asteroid && astro2 != false)
+			{
+				ast2 = i;
+				astro2 = true;
+			}
+			
+		}
+		
+		if(astro2 != true && astro1 != true) 
+		{
+			
+			
+				store.remove(ast2);
+				store.remove(ast1);
+				System.out.println("Both asteroids destroyed");
+				
+		}
+		else 
+			System.out.println("Error or Asteroid don't exist");
 	}
 	
 	public void printMap() {
@@ -108,6 +434,7 @@ public class GameWorld  {
 		}
 		
 	}
+	
 	
 	
 	public void printDisplay() throws IllegalArgumentException {
