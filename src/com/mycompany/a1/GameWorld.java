@@ -98,23 +98,75 @@ public class GameWorld  {
 	
 	
 	
-	public void tick() {
+	public void tick() throws IllegalArgumentException{
 		clock++;
 		if(store.size() > 0) {
-			for(int i = 0; i < (store.size() - 1); i++) {
+			//for(int i = 0; i < (store.size() - 1); i++) {
+				for(int i = store.size() - 1; i >= 0; i--) {
 				if(store.get(i) instanceof Movable) {
 					Movable curMovableObj = (Movable) store.get(i);
 					curMovableObj.move(); 
 				}
-				if(store.get(i) instanceof Missile) {
+				if(store.get(i) instanceof Missile) 
+				{
 					Missile curMissile = (Missile) store.get(i);
 					int fuel = curMissile.getFuel();
-					if(fuel > 1) {
+					if(fuel > 1) 
 						curMissile.setFuel(fuel - 1);
+//					else {
+//						curMissile = null;
+//						store.remove(i);
+//					}
+				}
+				if(store.get(i) instanceof SpaceStation)
+				{
+					SpaceStation spc = (SpaceStation) store.get(i);
+					if(clock % spc.getBlinkRate() == 0)
+					{
+						if(spc.getLight())
+							spc.setLight(false);
+						else 
+							spc.setLight(true);
 					}
 				}
+				
 			}
 		}
+		
+		//clock++;
+	}
+	
+//	
+//	public void jump () throws IllegalArgumentException
+//	{	
+//		
+//		for(int i = 0; i < store.size(); i++)
+//		{
+//		if(store.get(i) instanceof PlayerShip) 
+//			{
+//		PlayerShip ps = (PlayerShip) store.elementAt(i);
+//		ps.setLocation(512, 384);
+//		System.out.println("Ship jumped through hyperspace");
+//			}
+//		}
+//		
+//	}
+	
+	
+	public void jump () throws IllegalArgumentException
+	{	
+		
+		for(int i = 0; i < store.size(); i++)
+		{
+		if(store.elementAt(i) instanceof PlayerShip) 
+			{
+		PlayerShip ps = (PlayerShip) store.elementAt(i);
+		//ps.setLocation(512, 384);
+		ps.reset();
+		System.out.println("Ship jumped through hyperspace");
+			}
+		 	}
+		
 	}
 	
 	
@@ -134,23 +186,73 @@ public class GameWorld  {
 	
 	
 	
+//	public void turnShipLeft() {
+//		if(s instanceof PlayerShip) {
+//			s.setDirection(-90);
+//			System.out.println("Turning left");
+//		}
+//		else {
+//			System.out.println("Can't go left.");
+//		}
+//	}
+	
 	public void turnShipLeft() {
-		if(s instanceof PlayerShip) {
-			s.setDirection(-90);
-			System.out.println("Turning left");
-		}
-		else {
-			System.out.println("Can't go left.");
+		for(int i = 0; i < store.size(); i++) 
+		{
+			PlayerShip ps = (PlayerShip) store.elementAt(i);
+			//(ps.getDirection() == 0)
+				ps.setDirection(ps.getDirection() - 1);
+		System.out.println("Turning direction of ship");
+				
+			}
+	}
+	
+	public void speedUpShip() 
+	{
+		for(int i = 0; i < store.size(); i++)
+			
+		{
+			if(store.get(i) instanceof PlayerShip) {
+			PlayerShip ps = (PlayerShip) store.elementAt(i);
+			//if(ps.getSpeed() == 0)
+				ps.setSpeed(ps.getSpeed() + 1);
+				//ps.move();
+			System.out.println("Increasing speed");
+			}
 		}
 	}
 	
-	public void turnShipRight() {
-		if(s instanceof PlayerShip) {
-			s.setDirection(1);
-			System.out.println("Turning Right");
+	public void slowUpShip() 
+	{
+		for(int i = 0; i < store.size(); i++)
+		{
+			PlayerShip ps = (PlayerShip) store.elementAt(i);
+			//if(ps.getSpeed() == 0)
+				ps.setSpeed(ps.getSpeed() - 1);
+				//ps.move();
+			System.out.println("Decreasing speed");
 		}
-		else {
-			System.out.println("Can't go right");
+	}
+	
+//	public void turnShipRight() {
+//		if(s instanceof PlayerShip) {
+//			s.setDirection(1);
+//			System.out.println("Turning Right");
+//		}
+//		else {
+//			System.out.println("Can't go right");
+//		}
+//	}
+	
+	public void turnShipRight() 
+	{
+		for(int i = 0; i < store.size(); i++) 
+		{
+			PlayerShip ps = (PlayerShip) store.elementAt(i);
+			//if(ps.getDirection() == 0)
+				ps.setDirection(ps.getDirection() + 1);
+			System.out.println("Turn direction of ship");
+			
 		}
 	}
 	

@@ -26,7 +26,8 @@ public abstract class MovableGameObject extends GameObject implements Movable {
 	}
 	
 	public int getSpeed() {
-		return this.speed;
+		//return this.speed;
+		return speed;
 	}
 	
 	public void setDirection(int d) {
@@ -40,7 +41,7 @@ public abstract class MovableGameObject extends GameObject implements Movable {
 	public void move() {
 		double ang = Math.PI * ((90 - this.getDirection()));
 		double directionX = Math.cos(ang) * getSpeed();
-		double directionY = Math.sin(ang) *getSpeed();
+		double directionY = Math.sin(ang) * getSpeed();
 //		double directionX = Math.cos(ang) * getSpeed();
 //		double directionY = Math.sin(ang) * getSpeed();
 		//this.setLocationX((double) (this.getLocationX() + directionX));

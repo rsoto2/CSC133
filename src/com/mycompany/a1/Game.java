@@ -94,11 +94,28 @@ public class Game extends Form {
 					//gw.turnLeft();
 					gw.removeAstAndNPS(); //works
 					break;
-			
+				case 'l':
+					gw.turnShipLeft();
+					break;
+				case 'i':
+					gw.speedUpShip();
+					break;
+				case 'r':
+					gw.turnShipRight();
+					break;
+				case 'd':
+					gw.slowUpShip();
+					break;
+				case 't':
+					gw.tick();
+					break;
+				case 'j':
+					gw.jump();
+					break;
 					
 				
 				}
-				}//switch
+				}
 			}
 		});
 				
