@@ -1,7 +1,10 @@
 package com.mycompany.a1;
 
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
+
+
 
 public class GameWorld  {
 	
@@ -175,12 +178,13 @@ public class GameWorld  {
 		{
 		
 			PlayerShip ps = (PlayerShip) store.elementAt(i);
-			if(ps.getMissileLauncher().getDirection() == 0) {
-				ps.getMissileLauncher().setDirection(-90);
+			//if(ps.getMissileLauncher().getDirection() == 0) {
+				//ps.getMissileLauncher().setDirection(-90);
+				ps.changeLauncherDirection(1);
 				System.out.println("Turning direction of missile launcher");
-				}
-				else 
-					System.out.println("Can't turn missile");
+				//}
+				//else 
+					//System.out.println("Can't turn missile");
 		}
 	}
 	
@@ -196,12 +200,20 @@ public class GameWorld  {
 //		}
 //	}
 	
+	public PlayerShip findPlayer()
+	{
+		int i = -1;
+		PlayerShip temp = null;
+		return temp;
+	}
+	
 	public void turnShipLeft() {
 		for(int i = 0; i < store.size(); i++) 
 		{
 			PlayerShip ps = (PlayerShip) store.elementAt(i);
 			//(ps.getDirection() == 0)
-				ps.setDirection(ps.getDirection() - 1);
+				//ps.setDirection(ps.getDirection() - 1);
+			ps.Steer(1);
 		System.out.println("Turning direction of ship");
 				
 			}
@@ -250,7 +262,8 @@ public class GameWorld  {
 		{
 			PlayerShip ps = (PlayerShip) store.elementAt(i);
 			//if(ps.getDirection() == 0)
-				ps.setDirection(ps.getDirection() + 1);
+				//ps.setDirection(ps.getDirection() + 1);
+			ps.Steer(-1);
 			System.out.println("Turn direction of ship");
 			
 		}

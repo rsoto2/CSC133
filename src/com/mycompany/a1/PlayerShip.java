@@ -39,6 +39,15 @@ public class PlayerShip extends Ship implements ISteerable {
 		
 	}
 
+	public void changeLauncherDirection(int amount)
+	{
+		launcher.Steer(amount);
+	}
+	
+	public int getLauncherDirection()
+	{
+		return launcher.getDirection();
+	}
 	
 //	public int incrementSpeed(int speed) {
 //		return this.getSpeed() - 1;
@@ -89,18 +98,22 @@ public class PlayerShip extends Ship implements ISteerable {
 		);
 	}
 
-
 	@Override
-	public void turnLeft() {
+	public void Steer(int amount) {
 		// TODO Auto-generated method stub
+		if(getDirection() == 0 && amount < 0) 
+		{
+			setDirection(359);
+		}
+		else 
+		{
+			setDirection(getDirection() + amount);
+		}
+		
 		
 	}
 
 
-	@Override
-	public void turnRight() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 }

@@ -23,23 +23,31 @@ public class MissileLauncher extends MovableGameObject implements ISteerable {
 		return "Player MissileLauncher: " + getDirection();
 	}
 	
-//	public int getMissileLauncherDirection() {
-//		return getDirection();
-//	}
-//	
-//	public void setMissileLauncherDirection(int amount) {
-//		setDirection(amount);
-//	}
-
-	@Override
-	public void turnLeft() {
-		// TODO Auto-generated method stub
-		
+	public int getMissileLauncherDirection() {
+		return getDirection();
+	}
+	
+	public void setMissileLauncherDirection(int amount) {
+		setDirection(amount);
 	}
 
+//	@Override
+//	public void turnLeft() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void turnRight() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+
 	@Override
-	public void turnRight() {
+	public void Steer(int amount) {
 		// TODO Auto-generated method stub
+		setDirection(getDirection() + amount);
 		
 	}
 	
